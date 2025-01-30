@@ -7,7 +7,7 @@ import (
 )
 
 // Get input from command-line arguments
-func getInput() string {
+func GetInput() string {
 	if len(os.Args) < 2 {
 		fmt.Println("Error: No input provided")
 		os.Exit(1)
@@ -16,6 +16,6 @@ func getInput() string {
 }
 
 // Normalize input (convert to uppercase or lowercase)
-func normalizeInput(input string) string {
+func NormalizeInput(input string) string {
 	return strings.ToUpper(input) // Adjust this depending on banner file requirements
 }
