@@ -1,3 +1,4 @@
+// ascii_map.go
 package main
 
 // Mock ASCII Map for demonstration purposes
@@ -7,8 +8,8 @@ var asciiMap = map[rune][]string{
 	' ': {"     ", "     ", "     ", "     ", "     ", "     ", "     ", "     "},
 }
 
-// Map a character to its ASCII art representation
-func mapToASCII(char rune) ([]string, bool) {
+// MapToASCII maps a character to its ASCII art representation
+func MapToASCII(char rune) ([]string, bool) {
 	art, exists := asciiMap[char]
 	return art, exists
 }
