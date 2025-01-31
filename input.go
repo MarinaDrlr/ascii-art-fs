@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"strings"
 )
 
 // GetInput retrieves input string and chosen font
@@ -20,4 +21,9 @@ func GetInput() (string, string) {
 	}
 
 	return input, font
+}
+
+// NormalizeInput normalizes input (convert to uppercase or lowercase)
+func NormalizeInput(input string) string {
+	return strings.ToUpper(input) // Ensure case matches the banner file
 }
