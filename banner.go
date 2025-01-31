@@ -42,5 +42,14 @@ func LoadBanner(font string) map[rune][]string {
 		bannerMap[currentChar] = charLines
 	}
 
+	// Debugging: Print the parsed banner map
+	for char, art := range bannerMap {
+		fmt.Printf("Character: %c\n", char)
+		for _, line := range art {
+			fmt.Println(line)
+		}
+		fmt.Println()
+	}
+
 	return bannerMap
 }
