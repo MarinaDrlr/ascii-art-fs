@@ -23,7 +23,11 @@ func GetInput() (string, string) {
 	return input, font
 }
 
-// NormalizeInput normalizes input (convert to uppercase or lowercase)
+// NormalizeInput normalizes input and handles newlines
 func NormalizeInput(input string) string {
-	return strings.ToUpper(input) // Ensure case matches the banner file
+	// Convert \n to actual newlines
+	processedInput := strings.ReplaceAll(input, `\n`, "\n")
+
+	// Convert to uppercase (if needed for banner compatibility)
+	return strings.ToUpper(processedInput)
 }
