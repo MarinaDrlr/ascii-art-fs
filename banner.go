@@ -6,7 +6,6 @@ import (
 	"os"
 )
 
-// LoadBanner reads the banner file and stores characters in a map
 func LoadBanner(font string) map[rune][]string {
 	filename := font + ".txt" // Choose the correct file
 	file, err := os.Open(filename)
@@ -27,13 +26,20 @@ func LoadBanner(font string) map[rune][]string {
 
 		// Empty line signals end of a character block
 		if line == "" {
-			bannerMap[currentChar] = charLines
-			currentChar++
-			charLines = []string{} // Reset for the next character
+			if len(charLines) > 0 {
+				bannerMap[currentChar] = charLines
+				currentChar++
+				charLines = []string{} // Reset for the next character
+			}
 			continue
 		}
 
 		charLines = append(charLines, line)
+	}
+
+	// Add the last character block (if not followed by an empty line)
+	if len(charLines) > 0 {
+		bannerMap[currentChar] = charLines
 	}
 
 	return bannerMap
