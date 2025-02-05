@@ -3,27 +3,33 @@ package main
 import "fmt"
 
 func GenerateASCIIArt(input string, banner map[rune][]string) []string {
-	// Debugging to verify inputs
-	fmt.Printf("Debug: Input to GenerateASCIIArt: %s\n", input)
-	fmt.Printf("Debug: Banner Map Size: %d\n", len(banner))
-	if len(banner) == 0 {
-		fmt.Println("Debug: Banner map is empty!")
-	}
-	lines := make([]string, 8) // Preallocate 8 lines for the ASCII output
+	lines := make([]string, 8) // Each character's ASCII art is 8 lines tall
+
+	fmt.Printf("Debug: Input to GenerateASCIIArt: %s\n", input) // Log the input
 
 	for _, char := range input {
-		asciiArt, exists := banner[char]
-		if !exists {
-			asciiArt, exists = banner['?'] // Replace unknown characters with '?'
-			if !exists {
-				continue // Skip unsupported characters
+		if char == '\n' {
+			// Handle newline in the input
+			fmt.Println("Debug: Encountered newline character. Skipping to next line.")
+			for i := range lines {
+				lines[i] += "\n"
 			}
+			continue
 		}
 
-		for i := range asciiArt {
-			lines[i] += asciiArt[i] + " " // Append each line of the ASCII art
+		asciiArt, exists := banner[char]
+		if !exists {
+			// If the character is not found in the banner map
+			fmt.Printf("Warning: Character '%c' not found in banner map.\n", char)
+			continue
+		}
+
+		fmt.Printf("Debug: Adding ASCII art for character '%c' to lines.\n", char)
+		for i, artLine := range asciiArt {
+			lines[i] += artLine + " " // Add spacing between characters
 		}
 	}
 
+	fmt.Printf("Debug: Final ASCII art lines: %v\n", lines) // Log the result
 	return lines
 }
