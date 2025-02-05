@@ -6,39 +6,45 @@ import (
 	"os"
 )
 
+package main
+
+import (
+	"bufio"
+	"fmt"
+	"os"
+	"strings"
+)
+
+// LoadBanner loads the banner file and constructs a map of characters to their ASCII art representation
 func LoadBanner(font string) map[rune][]string {
-	// Create a map to store the ASCII art for each character
-	bannerMap := make(map[rune][]string)
+	bannerMap := make(map[rune][]string) // Map to store the banner characters
+	var currentChar rune                 // Variable to hold the currently processed character
+	charLines := []string{}              // Slice to store lines of ASCII art for a character
 
 	// Open the banner file
-	fileName := font + ".txt"
-	file, err := os.Open(fileName)
+	file, err := os.Open(font + ".txt")
 	if err != nil {
-		fmt.Printf("Error: Could not open banner file: %s\n", fileName)
+		fmt.Printf("Error: Could not open banner file: %s\n", font+".txt")
 		os.Exit(1)
 	}
 	defer file.Close()
 
-	// Debug: Notify the start of file reading
-	fmt.Printf("Debug: Starting to load banner from %s\n", fileName)
-
 	// Read the file line by line
 	scanner := bufio.NewScanner(file)
-	var charLines []string
-	var currentChar rune = ' ' // Placeholder for the current character
-
 	for scanner.Scan() {
-		line := scanner.Text()
-		fmt.Printf("Debug: Current line read: %q\n", line) // Debug: Print each line
+		line := scanner.Text() // Get the current line from the file
 
-		// Check for an empty line, which indicates the end of a character block
+		// Debugging: Show the current line being processed
+		fmt.Printf("Debug: Current line read: %q\n", line)
+
+		// Check for an empty line, signaling the end of a character block
 		if line == "" {
 			if len(charLines) == 8 {
 				// Add the character and its ASCII art to the map
 				bannerMap[currentChar] = charLines
 				fmt.Printf("Debug: Completed character '%c' with lines: %v\n", currentChar, charLines)
 			} else if len(charLines) > 0 {
-				// Debug: Warn if a block is incomplete
+				// Warn if a block is incomplete
 				fmt.Printf("Warning: Incomplete block for character '%c', lines: %v\n", currentChar, charLines)
 			}
 			// Reset for the next character
@@ -46,52 +52,46 @@ func LoadBanner(font string) map[rune][]string {
 			continue
 		}
 
-		// Check for a new character declaration
-		if len(charLines) == 0 && len(line) == 1 {
-			// Detect character declaration (single character line)
+		// Check for a new character declaration (single character line)
+		if len(charLines) == 0 && len(strings.TrimSpace(line)) == 1 {
+			// Detect character declaration
 			currentChar = rune(line[0])
 			fmt.Printf("Debug: Detected new character: '%c'\n", currentChar)
 		} else if len(charLines) < 8 {
 			// Collect ASCII art lines (up to 8 per character)
 			charLines = append(charLines, line)
 			fmt.Printf("Debug: Adding line to character '%c': %q\n", currentChar, line)
-		} else if line == "" {
-			// Empty line signals end of character block
-			if len(charLines) == 8 {
-				bannerMap[currentChar] = charLines
-				fmt.Printf("Debug: Completed character '%c' with lines: %v\n", currentChar, charLines)
-			} else {
-				fmt.Printf("Warning: Incomplete block for character '%c'\n", currentChar)
-			}
-			charLines = []string{}
+		} else {
+			// Unexpected extra lines (beyond 8)
+			fmt.Printf("Warning: Unexpected extra line for character '%c': %q\n", currentChar, line)
 		}
-
 	}
 
-	// Add the last character block (if not followed by an empty line)
+	// Add the last character block if not followed by an empty line
 	if len(charLines) == 8 {
 		bannerMap[currentChar] = charLines
-		fmt.Printf("Debug: Adding last character '%c' to banner map with lines: %v\n", currentChar, charLines)
+		fmt.Printf("Debug: Added last character '%c' to banner map with lines: %v\n", currentChar, charLines)
 	} else if len(charLines) > 0 {
-		fmt.Printf("Warning: Last character '%c' block incomplete with %d lines\n", currentChar, len(charLines))
+		// Warn about incomplete block at the end of the file
+		fmt.Printf("Warning: Last character '%c' block incomplete with %d lines: %v\n", currentChar, len(charLines), charLines)
 	}
 
-	// Debug: Print banner map size and keys
-	fmt.Printf("Debug: Banner map size: %d, keys: %v\n", len(bannerMap), keys(bannerMap))
-
+	// Check for errors in scanning the file
 	if err := scanner.Err(); err != nil {
-		fmt.Printf("Error: Failed to read banner file: %s\n", fileName)
+		fmt.Printf("Error: Failed to read the banner file: %s\n", err)
 		os.Exit(1)
 	}
 
+	fmt.Printf("Debug: Banner map size: %d, keys: %v\n", len(bannerMap), getKeys(bannerMap))
 	return bannerMap
 }
 
-// Helper function to get keys from a map
-func keys(m map[rune][]string) []rune {
-	k := make([]rune, 0, len(m))
-	for key := range m {
-		k = append(k, key)
+// Helper function to get the keys of the banner map for debugging
+func getKeys(m map[rune][]string) []rune {
+	keys := []rune{}
+	for k := range m {
+		keys = append(keys, k)
 	}
-	return k
+	return keys
 }
+
