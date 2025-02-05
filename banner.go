@@ -61,5 +61,10 @@ func LoadBanner(font string) map[rune][]string {
 		os.Exit(1)
 	}
 
+	fmt.Printf("Debug: Banner map loaded with %d characters.\n", len(bannerMap))
+	for char, art := range bannerMap {
+		fmt.Printf("Character: %c, ASCII Art Lines: %d\n", char, len(art))
+	}
+
 	return bannerMap
 }
