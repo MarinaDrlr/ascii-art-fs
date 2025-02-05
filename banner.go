@@ -7,11 +7,10 @@ import (
 )
 
 func LoadBanner(font string) map[rune][]string {
-	// Create a map to store ASCII art for each character
 	bannerMap := make(map[rune][]string)
-
-	// Open the banner file
 	fileName := font + ".txt"
+
+	// Open the file
 	file, err := os.Open(fileName)
 	if err != nil {
 		fmt.Printf("Error: Could not open banner file: %s\n", fileName)
@@ -19,51 +18,48 @@ func LoadBanner(font string) map[rune][]string {
 	}
 	defer file.Close()
 
-	// Buffered reading for efficient file processing
+	// Buffered file reading
 	scanner := bufio.NewScanner(file)
 
-	// Variables for storing each character
+	// Variables to process characters
 	var currentChar rune
 	var charLines []string
+	lineCount := 0
 
-	// Read file line by line
 	for scanner.Scan() {
 		line := scanner.Text()
 
-		// Check for a new character marker (empty line signals the end of a character)
+		// If an empty line is detected
 		if line == "" {
 			if len(charLines) > 0 {
-				// Add the completed character to the map
-				bannerMap[currentChar] = charLines
-				charLines = []string{} // Reset for the next character
+				bannerMap[currentChar] = charLines // Add completed character
+				charLines = []string{}             // Reset for the next character
+				lineCount = 0                      // Reset line count
 			}
 			continue
 		}
 
-		// Check if the line marks a new character
-		if len(line) == 1 {
-			currentChar = rune(line[0])
+		// Check if the line defines a new character (first line after empty line)
+		if lineCount == 0 {
+			currentChar = rune(line[0]) // First character in the line is the key
+			lineCount++                 // Increment line count
 			continue
 		}
 
-		// Add the line to the current character's ASCII art
+		// Add the ASCII art line for the current character
 		charLines = append(charLines, line)
+		lineCount++
 	}
 
-	// Add the last character (if any)
+	// Add the last character if it exists
 	if len(charLines) > 0 {
 		bannerMap[currentChar] = charLines
 	}
 
-	// Check for scanning errors
+	// Handle scanner errors
 	if err := scanner.Err(); err != nil {
-		fmt.Printf("Error: Failed to read banner file: %v\n", err)
+		fmt.Printf("Error reading banner file: %v\n", err)
 		os.Exit(1)
-	}
-
-	fmt.Printf("Debug: Banner map loaded with %d characters.\n", len(bannerMap))
-	for char, art := range bannerMap {
-		fmt.Printf("Character: %c, ASCII Art Lines: %d\n", char, len(art))
 	}
 
 	return bannerMap
