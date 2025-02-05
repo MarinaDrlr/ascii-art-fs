@@ -4,14 +4,6 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-)
-
-package main
-
-import (
-	"bufio"
-	"fmt"
-	"os"
 	"strings"
 )
 
@@ -94,4 +86,3 @@ func getKeys(m map[rune][]string) []rune {
 	}
 	return keys
 }
-
