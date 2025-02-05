@@ -30,10 +30,9 @@ func LoadBanner(font string) map[rune][]string {
 		// Debugging: Print each line read
 		fmt.Printf("Debug: Read line: %s\n", line)
 
-		// Empty line signals end of character block
+		// If line is empty, check if we have a full character block
 		if line == "" {
 			if len(charLines) == 8 {
-				// Add completed character block to banner map
 				bannerMap[currentChar] = charLines
 				fmt.Printf("Debug: Added character '%c' to banner map with %d lines\n", currentChar, len(charLines))
 			} else if len(charLines) > 0 {
@@ -44,7 +43,7 @@ func LoadBanner(font string) map[rune][]string {
 			continue
 		}
 
-		// First line of a new character block
+		// First non-empty line signals the start of a new character block
 		if lineCount == 0 {
 			currentChar = rune(line[0]) // First character in the line
 			fmt.Printf("Debug: Detected new character: '%c'\n", currentChar)
@@ -52,12 +51,20 @@ func LoadBanner(font string) map[rune][]string {
 			continue
 		}
 
-		// Add lines to the current character's ASCII art
+		// Add the line to the current character's block
 		charLines = append(charLines, line)
 		lineCount++
+
+		// If we've reached 8 lines, add the character to the banner map
+		if len(charLines) == 8 {
+			bannerMap[currentChar] = charLines
+			fmt.Printf("Debug: Added character '%c' to banner map with %d lines (complete block)\n", currentChar, len(charLines))
+			charLines = []string{} // Reset for the next character
+			lineCount = 0          // Reset line count
+		}
 	}
 
-	// Add the last character block if it exists
+	// Handle the last character block
 	if len(charLines) == 8 {
 		bannerMap[currentChar] = charLines
 		fmt.Printf("Debug: Added last character '%c' to banner map with %d lines\n", currentChar, len(charLines))
