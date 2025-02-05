@@ -18,10 +18,10 @@ func LoadBanner(font string) map[rune][]string {
 	}
 	defer file.Close()
 
-	// Buffered file reading
+	// Buffered reading
 	scanner := bufio.NewScanner(file)
 
-	// Variables to process characters
+	// Variables for processing
 	var currentChar rune
 	var charLines []string
 	lineCount := 0
@@ -29,36 +29,42 @@ func LoadBanner(font string) map[rune][]string {
 	for scanner.Scan() {
 		line := scanner.Text()
 
-		// If an empty line is detected
+		// Debug: Log each line as it is read
+		fmt.Printf("Debug: Read line: %s\n", line)
+
+		// Handle empty line (end of character block)
 		if line == "" {
 			if len(charLines) > 0 {
-				bannerMap[currentChar] = charLines // Add completed character
-				charLines = []string{}             // Reset for the next character
-				lineCount = 0                      // Reset line count
+				fmt.Printf("Debug: Adding character '%c' to banner map with %d lines\n", currentChar, len(charLines))
+				bannerMap[currentChar] = charLines
+				charLines = []string{}
+				lineCount = 0
 			}
 			continue
 		}
 
-		// Check if the line defines a new character (first line after empty line)
+		// Detect new character
 		if lineCount == 0 {
-			currentChar = rune(line[0]) // First character in the line is the key
-			lineCount++                 // Increment line count
+			currentChar = rune(line[0]) // First character in the line
+			fmt.Printf("Debug: Detected new character: %c\n", currentChar)
+			lineCount++
 			continue
 		}
 
-		// Add the ASCII art line for the current character
+		// Collect ASCII art for the current character
 		charLines = append(charLines, line)
 		lineCount++
 	}
 
-	// Add the last character if it exists
+	// Add the last character block if it exists
 	if len(charLines) > 0 {
+		fmt.Printf("Debug: Adding last character '%c' to banner map with %d lines\n", currentChar, len(charLines))
 		bannerMap[currentChar] = charLines
 	}
 
-	// Handle scanner errors
+	// Check for errors during scanning
 	if err := scanner.Err(); err != nil {
-		fmt.Printf("Error reading banner file: %v\n", err)
+		fmt.Printf("Error: Failed to read banner file: %v\n", err)
 		os.Exit(1)
 	}
 
