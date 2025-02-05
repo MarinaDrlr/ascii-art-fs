@@ -47,18 +47,25 @@ func LoadBanner(font string) map[rune][]string {
 		}
 
 		// Check for a new character declaration
-		if len(charLines) == 0 {
-			// Assume the line is the ASCII character declaration
-			if len(line) == 1 {
-				currentChar = rune(line[0])
-				fmt.Printf("Debug: Detected new character: '%c'\n", currentChar)
-			} else {
-				fmt.Printf("Warning: Unexpected character line: %q\n", line)
-			}
-		} else {
-			// Add the line to the current character block
+		if len(charLines) == 0 && len(line) == 1 {
+			// Detect character declaration (single character line)
+			currentChar = rune(line[0])
+			fmt.Printf("Debug: Detected new character: '%c'\n", currentChar)
+		} else if len(charLines) < 8 {
+			// Collect ASCII art lines (up to 8 per character)
 			charLines = append(charLines, line)
+			fmt.Printf("Debug: Adding line to character '%c': %q\n", currentChar, line)
+		} else if line == "" {
+			// Empty line signals end of character block
+			if len(charLines) == 8 {
+				bannerMap[currentChar] = charLines
+				fmt.Printf("Debug: Completed character '%c' with lines: %v\n", currentChar, charLines)
+			} else {
+				fmt.Printf("Warning: Incomplete block for character '%c'\n", currentChar)
+			}
+			charLines = []string{}
 		}
+
 	}
 
 	// Add the last character block (if not followed by an empty line)
