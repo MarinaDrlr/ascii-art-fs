@@ -28,9 +28,9 @@ func LoadBanner(font string) map[rune][]string {
 		line := scanner.Text()
 
 		// Debugging: Print each line read
-		fmt.Printf("Debug: Read line: %s\n", line)
+		fmt.Printf("Debug: Read line: %q\n", line)
 
-		// If line is empty, check if we have a full character block
+		// Handle empty lines as separator
 		if line == "" {
 			if len(charLines) == 8 {
 				bannerMap[currentChar] = charLines
@@ -38,33 +38,35 @@ func LoadBanner(font string) map[rune][]string {
 			} else if len(charLines) > 0 {
 				fmt.Printf("Warning: Character '%c' block incomplete with %d lines\n", currentChar, len(charLines))
 			}
-			charLines = []string{} // Reset for the next character
-			lineCount = 0          // Reset line count
+			// Reset for the next character block
+			charLines = []string{}
+			lineCount = 0
 			continue
 		}
 
-		// First non-empty line signals the start of a new character block
+		// First non-empty line marks the character
 		if lineCount == 0 {
-			currentChar = rune(line[0]) // First character in the line
+			currentChar = rune(line[0]) // Extract character
 			fmt.Printf("Debug: Detected new character: '%c'\n", currentChar)
 			lineCount++
 			continue
 		}
 
-		// Add the line to the current character's block
+		// Append line to character block
 		charLines = append(charLines, line)
 		lineCount++
 
-		// If we've reached 8 lines, add the character to the banner map
+		// If block completes 8 lines, store it
 		if len(charLines) == 8 {
 			bannerMap[currentChar] = charLines
 			fmt.Printf("Debug: Added character '%c' to banner map with %d lines (complete block)\n", currentChar, len(charLines))
-			charLines = []string{} // Reset for the next character
-			lineCount = 0          // Reset line count
+			// Reset for the next character block
+			charLines = []string{}
+			lineCount = 0
 		}
 	}
 
-	// Handle the last character block
+	// Handle the last character block if file doesn't end with an empty line
 	if len(charLines) == 8 {
 		bannerMap[currentChar] = charLines
 		fmt.Printf("Debug: Added last character '%c' to banner map with %d lines\n", currentChar, len(charLines))
