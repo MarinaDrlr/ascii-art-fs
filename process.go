@@ -7,17 +7,15 @@ func GenerateASCIIArt(input string, banner map[rune][]string) []string {
 	inputLines := strings.Split(input, "\n") // Split input into separate lines
 
 	for _, line := range inputLines {
-		// Skip empty lines to prevent extra spacing
-		if line == "" {
-			continue
-		}
-
 		asciiLines := make([]string, 8) // ASCII characters are 8 lines tall
 
 		for _, char := range line {
 			asciiArt, exists := banner[char]
 			if !exists {
-				continue // Skip unknown characters
+				asciiArt, exists = banner['?'] // Replace unknown characters with '?'
+				if !exists {
+					continue // Skip if '?' isn't in the banner file either
+				}
 			}
 
 			for i, artLine := range asciiArt {
