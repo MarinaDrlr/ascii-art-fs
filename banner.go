@@ -6,14 +6,6 @@ import (
 	"os"
 )
 
-package main
-
-import (
-	"bufio"
-	"fmt"
-	"os"
-)
-
 func LoadBanner(font string) map[rune][]string {
 	// Create a map to store the ASCII art for each character
 	bannerMap := make(map[rune][]string)
