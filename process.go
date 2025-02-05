@@ -1,31 +1,20 @@
 package main
 
-import "strings"
-
 func GenerateASCIIArt(input string, banner map[rune][]string) []string {
-	lines := []string{}                      // To store the resulting ASCII art
-	inputLines := strings.Split(input, "\n") // Split input into separate lines
+	lines := make([]string, 8) // Preallocate 8 lines for the ASCII output
 
-	for _, line := range inputLines {
-		asciiLines := make([]string, 8) // ASCII characters are 8 lines tall
-
-		for _, char := range line {
-			asciiArt, exists := banner[char]
+	for _, char := range input {
+		asciiArt, exists := banner[char]
+		if !exists {
+			asciiArt, exists = banner['?'] // Replace unknown characters with '?'
 			if !exists {
-				asciiArt, exists = banner['?'] // Replace unknown characters with '?'
-				if !exists {
-					continue // Skip if '?' isn't in the banner file either
-				}
-			}
-
-			for i, artLine := range asciiArt {
-				asciiLines[i] += artLine + " "
+				continue // Skip unsupported characters
 			}
 		}
 
-		// Add the generated ASCII art for the line to the result
-		lines = append(lines, asciiLines...)
-		lines = append(lines, "") // Add a blank line between each text line
+		for i := range asciiArt {
+			lines[i] += asciiArt[i] + " " // Append each line of the ASCII art
+		}
 	}
 
 	return lines
