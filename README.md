@@ -12,7 +12,7 @@ This is a simple and efficient ASCII Art generator written in Go. The program ta
 - Handles large text inputs efficiently without performance issues.
 - Simple and lightweight, using only Go's standard library.
 - Command-line interface (CLI) for quick usage.
-- Works cross-platform on Windows, Linux, and macOS.
+- This program is designed for Linux/macOS. Windows users should use Windows Subsystem for Linux (WSL).
 
 ## Installation
 
