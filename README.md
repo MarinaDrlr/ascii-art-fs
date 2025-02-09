@@ -6,13 +6,16 @@ This is a simple and efficient ASCII Art generator written in Go. The program ta
 
 ## Features
 
-- Supports three font styles: `standard`, `shadow`, and `thinkertoy`.
-- Supports multi-line input, correctly displaying ASCII Art on separate lines.
-- Preserves text alignment and spacing.
-- Handles large text inputs efficiently without performance issues.
-- Simple and lightweight, using only Go's standard library.
-- Command-line interface (CLI) for quick usage.
-- This program is designed for Linux/macOS. Windows users should use Windows Subsystem for Linux (WSL).
+- Supports three fonts: standard, shadow, and thinkertoy.
+- Maintains text formatting: Correct alignment, spacing & multi-line handling.
+- Optimized for performance: Handles large inputs efficiently.
+- Lightweight: Uses only Go’s standard library.
+- CLI-based: Simple command-line interface for fast execution.
+
+## Compatibility
+
+This program is designed for Linux/macOS.  
+Windows users should use WSL (Windows Subsystem for Linux).
 
 ## Installation
 
@@ -43,7 +46,6 @@ go run . "Hello World" "standard"
 
 ```sh
 go run . "Hello World" | cat -e
-
 ```
 
 
@@ -78,7 +80,6 @@ go run . "Hello" | cat -e
                                 $
 ```
 
-
 ```
 go run . "Hello" "shadow" | cat -e
                                       $
@@ -105,7 +106,7 @@ Special characters (e.g., !@#$%^&*()-_=+[]{}|;:'",.<>?/)
 
 Newline character (\n) for multi-line formatting
 
-For characters that have special meaning in the shell (e.g., ", ', \, &, |, *), you must escape them using a backslash (\\\).
+For characters that have special meaning in the shell (e.g., ", ', \, &, |, *), you must escape them using a backslash (\\\) so they appear as literal characters.
 
 Example:
 
