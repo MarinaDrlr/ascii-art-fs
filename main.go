@@ -1,20 +1,21 @@
 package main
 
 import (
+	"ascii-art/funcs"
 	"fmt"
 	"os"
 )
 
 func main() {
 	// Get user input and font choice
-	input, font, err := GetInput()
+	input, font, err := funcs.GetInput()
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "Error:", err)
 		os.Exit(1)
 	}
 
 	// Normalize the input to match the banner map keys
-	normalizedInput := NormalizeInput(input)
+	normalizedInput := funcs.NormalizeInput(input)
 
 	// Check if the normalized input is empty
 	if normalizedInput == "" {
@@ -23,14 +24,14 @@ func main() {
 	}
 
 	// Load the banner file dynamically
-	banner, err := LoadBanner(font)
+	banner, err := funcs.LoadBanner(font)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "Error:", err)
 		os.Exit(1)
 	}
 
 	// Generate ASCII art
-	asciiArt, err := GenerateASCIIArt(normalizedInput, banner)
+	asciiArt, err := funcs.GenerateASCIIArt(normalizedInput, banner)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
@@ -43,7 +44,7 @@ func main() {
 	}
 
 	// Display the result
-	DisplayASCIIArt(asciiArt)
+	funcs.DisplayASCIIArt(asciiArt)
 
 	// fmt.Println("ASCII art generated successfully.")
 }

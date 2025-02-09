@@ -1,4 +1,4 @@
-package main
+package funcs
 
 import (
 	"bufio"
@@ -8,7 +8,9 @@ import (
 
 // LoadBanner reads the font file and maps characters to ASCII art
 func LoadBanner(font string) (map[rune][]string, error) {
-	filename := font + ".txt"
+	filename := "../fonts/" + font + ".txt"
+
+	// fmt.Println("Looking for font file at:", filename)
 
 	// Check if the file exists before trying to open it
 	if _, err := os.Stat(filename); os.IsNotExist(err) {
