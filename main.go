@@ -19,7 +19,6 @@ func main() {
 
 	// Check if the normalized input is empty
 	if normalizedInput == "" {
-		// fmt.Println("Error: Invalid or empty input provided. Please try again.") // Debugging message (commented out)
 		return // Simply exit without printing anything
 	}
 
@@ -43,8 +42,7 @@ func main() {
 		return
 	}
 
-	// Display the result
+	// Print the generated ASCII art to the console
 	funcs.DisplayASCIIArt(asciiArt)
 
-	// fmt.Println("ASCII art generated successfully.")
 }

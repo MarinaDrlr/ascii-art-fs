@@ -7,7 +7,7 @@ import (
 // GenerateASCIIArt converts input into ASCII art based on the loaded banner
 func GenerateASCIIArt(input string, banner map[rune][]string) ([]string, error) {
 	var result []string
-	lines := make([]string, 8)  // Each character's ASCII art is 8 lines tall
+	lines := make([]string, 8)  // Temporary storage for ASCII art lines (each character is 8 lines tall)
 	newLineEncountered := false // Track if we processed a newline
 
 	for _, char := range input {
@@ -23,25 +23,25 @@ func GenerateASCIIArt(input string, banner map[rune][]string) ([]string, error) 
 				result = append(result, "")
 			}
 
-			newLineEncountered = true
-			continue
+			newLineEncountered = true // Mark that a newline was processed to handle consecutive newlines correctly
+			continue                  // Skip to the next character
 		}
 
-		// Reset the newline tracker because we found a character
+		// Reset tracker since we encountered a non-newline character
 		newLineEncountered = false
 
 		asciiArt, exists := banner[char]
 		if !exists {
-			return nil, fmt.Errorf("Error: Character '%c' not found in banner file", char)
+			return nil, fmt.Errorf("Error: Character '%c' is missing from the font definition", char)
 		}
 
-		// Ensure the ASCII art has exactly 8 lines to prevent index out of range errors
+		// Must be exactly 8 lines to prevent index out of range errors
 		if len(asciiArt) != 8 {
 			return nil, fmt.Errorf("Error: Character '%c' has an invalid ASCII art format", char)
 		}
 
 		for i, artLine := range asciiArt {
-			lines[i] += artLine + " " // Add spacing between characters
+			lines[i] += artLine + " " // Append the character's line with spacing
 		}
 	}
 
@@ -55,5 +55,5 @@ func GenerateASCIIArt(input string, banner map[rune][]string) ([]string, error) 
 		result = append(result, "")
 	}
 
-	return result, nil
+	return result, nil // Return the generated ASCII art lines with no error
 }
