@@ -26,7 +26,7 @@ Windows users should use WSL (Windows Subsystem for Linux).
 ### Clone the repository
 
 ```sh
-git clone <repository-url>
+git clone https://platform.zone01.gr/git/nzemperl/ascii-art.git
 cd ascii-art-go
 ```
 
