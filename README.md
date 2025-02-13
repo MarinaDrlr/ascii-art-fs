@@ -27,6 +27,7 @@ Windows users should use WSL (Windows Subsystem for Linux).
 
 ```sh
 git clone https://platform.zone01.gr/git/nzemperl/ascii-art.git
+git clone https://github.com/MarinaDrlr/ASCII-Art
 cd ascii-art-go
 ```
 
