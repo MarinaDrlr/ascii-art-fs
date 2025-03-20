@@ -1,7 +1,7 @@
 package main
 
 import (
-	"ascii-art/funcs"
+	"ascii-art_1/funcs"
 	"testing"
 )
 
