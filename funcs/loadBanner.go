@@ -12,7 +12,7 @@ func LoadBanner(font string) (map[rune][]string, error) {
 
 	// Check if the file exists before trying to open it
 	if _, err := os.Stat(filename); os.IsNotExist(err) {
-		return nil, fmt.Errorf("Banner file %s.txt not found.", font)
+		return nil, fmt.Errorf("Banner file %s.txt does not exist.", font)
 	}
 
 	file, err := os.Open(filename)

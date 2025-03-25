@@ -1,7 +1,7 @@
 package main
 
 import (
-	"ascii-art/funcs"
+	"fs/funcs"
 	"testing"
 )
 
@@ -23,6 +23,17 @@ func TestNormalizeInput(t *testing.T) {
 	}
 }
 
+// TestNormalizeInputNewlines checks that actual newlines are preserved
+func TestNormalizeInputNewlines(t *testing.T) {
+	input := "Line1\nLine2"
+	expected := "Line1\nLine2"
+
+	result := funcs.NormalizeInput(input)
+	if result != expected {
+		t.Errorf("NormalizeInput with real newlines returned %q; want %q", result, expected)
+	}
+}
+
 // TestLoadBanner ensures that the banner font is loaded correctly and is not empty
 func TestLoadBanner(t *testing.T) {
 	banner, err := funcs.LoadBanner("standard")
@@ -33,6 +44,25 @@ func TestLoadBanner(t *testing.T) {
 	// The banner map should not be empty if the font loaded successfully
 	if len(banner) == 0 {
 		t.Errorf("LoadBanner failed: expected non-empty banner map")
+	}
+}
+
+// TestLoadCorruptedBanner checks that an error is returned
+// when trying to load a corrupted or incomplete banner file
+func TestLoadCorruptedBanner(t *testing.T) {
+	// "broken.txt" should be a corrupted banner file in the "fonts" directory
+	_, err := funcs.LoadBanner("broken")
+	if err == nil {
+		t.Errorf("Expected error when loading corrupted banner, got nil")
+	}
+}
+
+// TestLoadMissingFontFile checks that an error is returned
+// when trying to load a banner font file that does not exist
+func TestLoadMissingFontFile(t *testing.T) {
+	_, err := funcs.LoadBanner("doesnotexist")
+	if err == nil {
+		t.Errorf("Expected error when loading missing font file, got nil")
 	}
 }
 
@@ -65,3 +95,24 @@ func TestGenerateASCIIArt(t *testing.T) {
 		}
 	}
 }
+
+// TestGenerateASCIIArtUnsupportedChar checks that an error is returned
+// when the input contains a character not found in the banner map
+func TestGenerateASCIIArtUnsupportedChar(t *testing.T) {
+	// Load the standard banner
+	banner, err := funcs.LoadBanner("standard")
+	if err != nil {
+		t.Fatalf("Failed to load banner: %v", err)
+	}
+
+	// Input contains a non-ASCII character (emoji)
+	_, err = funcs.GenerateASCIIArt("Hello 🌍", banner)
+	if err == nil {
+		t.Errorf("Expected error for unsupported character, got nil")
+	}
+}
+
+// // TestDEBUGCheck forces a failure to ensure tests are running
+// func TestDEBUGCheck(t *testing.T) {
+// 	t.Fail() // This will make the test fail on purpose
+// }

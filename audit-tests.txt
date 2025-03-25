@@ -31,3 +31,5 @@ go run . '\!" #$%&'"'"'()*+,-./' | cat -e
 go run . "ABCDEFGHIJKLMNOPQRSTUVWXYZ" | cat -e
 
 go run . "abcdefghijklmnopqrstuvwxyz" | cat -e
+
+go run . "Supercalifragilisticexpialidocious" | cat -e

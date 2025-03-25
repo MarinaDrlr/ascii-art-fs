@@ -1,4 +1,4 @@
-# ASCII Art Generator in Go
+# ASCII Art FS (Font Selector) in Go
 
 ## Description
 
@@ -26,8 +26,8 @@ Windows users should use WSL (Windows Subsystem for Linux).
 ### Clone the repository
 
 ```sh
-git clone https://github.com/MarinaDrlr/ascii-art
-cd ascii-art
+git clone https://github.com/MarinaDrlr/ascii-art-fs
+cd ascii-art-fs
 ```
 
 ### Run the program
@@ -52,7 +52,7 @@ go run . "Hello World" | cat -e
 ## Usage
 
 The program accepts a string input and an optional font argument. \
-If the font is not specified, it defaults to `standard.txt`.
+If the font is not specified, it defaults to the `standard` banner file.
 
 ### Examples & Output:
 
@@ -111,16 +111,15 @@ For characters that have special meaning in the shell (e.g., ", ', \, &, |, *), 
 Example:
 
 ```sh
-go run . "Hello \"World\" \|" | cat -e
-
- _    _            _    _                    _ _   __          __                    _        _    _ _          __        _   $
-| |  | |          | |  | |                  ( | )  \ \        / /                   | |      | |  ( | )         \ \      | |  $
-| |__| |    ___   | |  | |    ___            V V    \ \  /\  / /     ___     _ __   | |    __| |   V V           \ \     | |  $
-|  __  |   / _ \  | |  | |   / _ \                   \ \/  \/ /     / _ \   | '__|  | |   / _` |                  \ \    | |  $
-| |  | |  |  __/  | |  | |  | (_) |                   \  /\  /     | (_) |  | |     | |  | (_| |                   \ \   | |  $
-|_|  |_|   \___|  |_|  |_|   \___/                     \/  \/       \___/   |_|     |_|   \__,_|                    \_\  | |  $
-                                                                                                                         | |  $
-                                                                                                                         |_|  $
+go run . "Hello World" | cat -e
+ _    _            _    _                   __          __                    _        _   $
+| |  | |          | |  | |                  \ \        / /                   | |      | |  $
+| |__| |    ___   | |  | |    ___            \ \  /\  / /     ___     _ __   | |    __| |  $
+|  __  |   / _ \  | |  | |   / _ \            \ \/  \/ /     / _ \   | '__|  | |   / _` |  $
+| |  | |  |  __/  | |  | |  | (_) |            \  /\  /     | (_) |  | |     | |  | (_| |  $
+|_|  |_|   \___|  |_|  |_|   \___/              \/  \/       \___/   |_|     |_|   \__,_|  $
+                                                                                           $
+                                                                                           $
 ```
 
 ## Error Handling
@@ -128,12 +127,13 @@ go run . "Hello \"World\" \|" | cat -e
 - If no input is provided:
   ```sh
   go run .
-  Error: No input provided.
+  Usage: go run . [STRING] [BANNER]
+  EX: go run . "something" standard
   ```
 - If the font file is missing:
   ```sh
   go run . "Test" missingfont
-  Error: Banner font missingfont does not exist.
+  Error: Banner font missingfont.txt does not exist.
   ```
 - If the font file is empty:
   ```sh
@@ -148,15 +148,38 @@ go run . "Hello \"World\" \|" | cat -e
 
 ## Testing
 
-Automated tests are included to validate the ASCII rendering. To run tests:
+Unit tests are included to validate the ASCII rendering. To run tests:
 
 ```sh
-go test ./tests
+go test
+```
+or
+```sh
+go test -v
+```
+for verbose output with detailed information about each test case.
+
+### Sample test output
+
+```sh
+=== RUN   TestNormalizeInput
+--- PASS: TestNormalizeInput (0.00s)
+=== RUN   TestNormalizeInputNewlines
+--- PASS: TestNormalizeInputNewlines (0.00s)
+=== RUN   TestLoadBanner
+--- PASS: TestLoadBanner (0.00s)
+=== RUN   TestLoadCorruptedBanner
+--- PASS: TestLoadCorruptedBanner (0.00s)
+=== RUN   TestLoadMissingFontFile
+--- PASS: TestLoadMissingFontFile (0.00s)
+=== RUN   TestGenerateASCIIArt
+--- PASS: TestGenerateASCIIArt (0.00s)
+=== RUN   TestGenerateASCIIArtUnsupportedChar
+--- PASS: TestGenerateASCIIArtUnsupportedChar (0.00s)
+PASS
+ok      fs      0.003s
 ```
 
-## License
-
-This project is open-source and available under the MIT License.
 
 ## License
 
