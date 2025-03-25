@@ -10,7 +10,7 @@ func main() {
 	// Get user input and font choice
 	input, font, err := funcs.GetInput()
 	if err != nil {
-		fmt.Fprintln(os.Stderr, "Error:", err)
+		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
 

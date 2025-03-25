@@ -26,9 +26,8 @@ Windows users should use WSL (Windows Subsystem for Linux).
 ### Clone the repository
 
 ```sh
-git clone https://platform.zone01.gr/git/nzemperl/ascii-art.git
-git clone https://github.com/MarinaDrlr/ASCII-Art
-cd ascii-art-go
+git clone https://github.com/MarinaDrlr/ascii-art
+cd ascii-art
 ```
 
 ### Run the program
@@ -82,7 +81,7 @@ go run . "Hello" | cat -e
 ```
 
 ```
-go run . "Hello" "shadow" | cat -e
+go run . "Hello" shadow | cat -e
                                       $
 _|    _|            _|  _|            $
 _|    _|    _|_|    _|  _|    _|_|    $
@@ -133,13 +132,18 @@ go run . "Hello \"World\" \|" | cat -e
   ```
 - If the font file is missing:
   ```sh
-  go run . "Test" "missingfont"
-  Error: Banner font "missingfont" does not exist.
+  go run . "Test" missingfont
+  Error: Banner font missingfont does not exist.
   ```
-- If the font file is empty or malformed:
+- If the font file is empty:
   ```sh
-  go run . "Test" "corruptfont"
-  Error: Banner file "corruptfont.txt" is empty.
+  go run . "Test" empty
+  Error: Banner file empty.txt is empty.
+  ```
+  If the font file is malformed:
+  ```sh
+  go run . "Test" broken
+  Error: Banner file broken.txt is corrupted.
   ```
 
 ## Testing

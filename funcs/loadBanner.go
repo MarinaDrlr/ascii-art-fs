@@ -46,7 +46,7 @@ func LoadBanner(font string) (map[rune][]string, error) {
 
 	// If no lines were read, return an error
 	if linesRead == 0 {
-		return nil, fmt.Errorf("Banner file \"%s\" is empty.", filename)
+		return nil, fmt.Errorf("Banner file %s.txt is empty.", filename)
 	}
 
 	if len(charLines) > 0 {
