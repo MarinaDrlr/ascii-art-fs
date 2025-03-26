@@ -12,7 +12,7 @@ func LoadBanner(font string) (map[rune][]string, error) {
 
 	// Check if the file exists before trying to open it
 	if _, err := os.Stat(filename); os.IsNotExist(err) {
-		return nil, fmt.Errorf("Banner file %s.txt does not exist.", font)
+		return nil, fmt.Errorf("Banner font %s does not exist.", font)
 	}
 
 	file, err := os.Open(filename)
@@ -46,7 +46,7 @@ func LoadBanner(font string) (map[rune][]string, error) {
 
 	// If no lines were read, return an error
 	if linesRead == 0 {
-		return nil, fmt.Errorf("Banner file %s.txt is empty.", filename)
+		return nil, fmt.Errorf("Banner file %s.txt is empty.", font)
 	}
 
 	if len(charLines) > 0 {

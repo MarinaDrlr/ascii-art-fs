@@ -5,22 +5,19 @@ import (
 	"os"
 )
 
-// GetInput retrieves the user's input text and the chosen font (or defaults to "standard").
-// It expects 1 or 2 arguments (excluding flags). If the argument count is invalid, it returns an error.
+// GetInput retrieves the user's input string and banner font.
+// It requires exactly 2 arguments: the input text and the font name.
+// If the number of arguments is not exactly 2, it returns a usage error.
 func GetInput() (string, string, error) {
 	args := os.Args[1:] // Skip the program name
 
-	// Validate the number of non-flag arguments
-	if len(args) == 0 || len(args) > 2 {
-		return "", "", fmt.Errorf("Usage: go run . [STRING] [BANNER]\nEX: go run . something standard")
+	if len(args) != 2 {
+		// Invalid number of arguments – return usage message
+		return "", "", fmt.Errorf("Usage: go run . [STRING] [BANNER]\nEX: go run . \"something\" standard")
 	}
 
-	input := args[0]   // Required: the text to convert to ASCII art
-	font := "standard" // Default font
-
-	if len(args) == 2 {
-		font = args[1] // Optional: user-specified font
-	}
+	input := args[0] // Required: the text to convert to ASCII art
+	font := args[1]  // Required: the font name (e.g., standard, shadow, thinkertoy)
 
 	return input, font, nil
 }
