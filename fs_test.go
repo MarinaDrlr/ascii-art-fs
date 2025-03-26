@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fs/funcs"
+	"ascii-art-fs/funcs"
 	"testing"
 )
 

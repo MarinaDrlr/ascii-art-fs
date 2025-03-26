@@ -1,8 +1,8 @@
 package main
 
 import (
+	"ascii-art-fs/funcs"
 	"fmt"
-	"fs/funcs"
 	"os"
 )
 
