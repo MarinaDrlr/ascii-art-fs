@@ -1,13 +1,5 @@
 go run . "banana" standard abc
 
-go run .
-
-go run . "Test" missingfont
-
-go run . "Test" empty
-
-go run . "Test" broken
-
 go run . "hello" standard | cat -e
 
 go run . "hello world" shadow | cat -e
@@ -30,7 +22,15 @@ go run . "LoRemIPSUM" shadow
 
 go run . "78392019" standard
 
-go run . "@#$%^&*!?" thinkertoy
+go run . "@#$%^&*\!" thinkertoy
 
 go run . "Hi 2025! It's Me @Home" shadow
+
+go run .
+
+go run . "Test" missingfont
+
+go run . "Test" empty
+
+go run . "Test" broken
 
