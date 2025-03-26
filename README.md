@@ -44,18 +44,20 @@ go run . "Hello World" shadow | cat -e
 
 ## Usage
 
-The program accepts a string input and a font argument.
+The program requires exactly two arguments: a string input and a font name.
 
 ### Examples & Output:
 
 ```sh
 go run . "" | cat -e
-           # nothing printed
+Usage: go run . [STRING] [BANNER]
+EX: go run . "something" standard
 ```
 
 ```sh
 go run . "\n" | cat -e
-$          # a single blank line printed
+Usage: go run . [STRING] [BANNER]
+EX: go run . "something" standard
 ```
 
 ```sh
@@ -80,6 +82,18 @@ _|    _|  _|        _|  _|  _|    _|  $
 _|    _|    _|_|_|  _|  _|    _|_|    $
                                       $
                                       $
+```
+
+```
+go run . "Hello" thinkertoy | cat -e
+                      $
+o  o       o  o       $
+|  |       |  |       $
+O--O  o-o  |  |  o-o  $
+|  |  |-'  |  |  | |  $
+o  o  o-o  o  o  o-o  $
+                      $
+                      $
 ```
 
 ## Character Support
@@ -150,7 +164,7 @@ go run . "Hello World" standard | cat -e
   Error: Banner file empty.txt is empty.
   ```
 
-- If the font file is malformed:
+  If the font file is malformed:
 
   ```sh
   go run . "Test" broken
